@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #0a0303;
+    }
+    #taskForm {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    input[type="text"] {
+      width: 300px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: auto;
+    }
+    li {
+      background: #acd919;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    li.completed {
+      text-decoration: line-through;
+      background: #e0ffe0;
+    }
+    .task-info {
+      flex: 1;
+    }
+    .actions button {
+      margin-left: 5px;
+      padding: 5px 10px;
+    }
+    .datetime {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 To-Do List</h1>
+
+  <form id="taskForm">
+    <input type="text" id="taskInput" placeholder="Enter your task..." required>
+    <input type="datetime-local" id="taskDateTime">
+    <button type="submit">Add Task</button>
+  </form>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const taskForm = document.getElementById('taskForm');
+    const taskInput = document.getElementById('taskInput');
+    const taskDateTime = document.getElementById('taskDateTime');
+    const taskList = document.getElementById('taskList');
+
+    function createTaskElement(text, dateTime) {
+      const li = document.createElement('li');
+
+      const taskInfo = document.createElement('div');
+      taskInfo.className = 'task-info';
+
+      const span = document.createElement('span');
+      span.textContent = text;
+
+      const time = document.createElement('div');
+      time.className = 'datetime';
+      if (dateTime) time.textContent = `⏰ ${new Date(dateTime).toLocaleString()}`;
+
+      taskInfo.appendChild(span);
+      taskInfo.appendChild(time);
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const doneBtn = document.createElement('button');
+      doneBtn.textContent = '✔';
+      doneBtn.onclick = () => {
+        li.classList.toggle('completed');
+      };
+
+      const editBtn = document.createElement('button');
+      editBtn.textContent = '✎';
+      editBtn.onclick = () => {
+        const newTask = prompt('Edit your task:', span.textContent);
+        if (newTask) span.textContent = newTask;
+      };
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '🗑';
+      deleteBtn.onclick = () => li.remove();
+
+      actions.append(doneBtn, editBtn, deleteBtn);
+
+      li.append(taskInfo, actions);
+      return li;
+    }
+
+    taskForm.onsubmit = (e) => {
+      e.preventDefault();
+      const text = taskInput.value.trim();
+      const dateTime = taskDateTime.value;
+
+      if (text) {
+        const task = createTaskElement(text, dateTime);
+        taskList.appendChild(task);
+        taskInput.value = '';
+        taskDateTime.value = '';
+      }
+    };
+  </script>
+</body>
+</html>
