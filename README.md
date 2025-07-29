@@ -1,0 +1,1 @@
+A To-Do app in web development is a user-friendly web application designed to help users organize and manage their daily tasks efficiently. It generally includes core functionalities like adding new tasks, editing existing ones, deleting completed or unwanted tasks, and marking tasks as done to keep track of progress.
